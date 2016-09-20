@@ -4,16 +4,20 @@ package com.ckb.backend;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Table;
 import java.util.ArrayList;
 
 @Entity
-@Table(name="ACCOUNT")
-
 public class Account {
 
     @Id
-    @Column(name="EMAIL")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotEmpty
     private String email;
 
     public Account() {
