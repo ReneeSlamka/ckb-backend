@@ -28,20 +28,21 @@ public class WebController {
     }
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
-    public @ResponseBody Map createAccount(
+    public @ResponseBody String createAccount(
             @RequestBody String accountSignupParams) throws JSONException {
 
         JSONObject jsonBody = new JSONObject(accountSignupParams);
 
         String accountEmail = jsonBody.getString("email");
 
-        if (accountEmail == null) {
+        /*if (accountEmail == null) {
             accountEmail = "defaultName";
         }
 
         Map response = accountService.createAccount(accountEmail);
 
-        return response;
+        return response;*/
+        return accountEmail;
     }
 
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
