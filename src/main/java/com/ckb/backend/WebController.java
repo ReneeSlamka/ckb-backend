@@ -27,6 +27,9 @@ public class WebController {
         return "Hello World test yo!";
     }
 
+    /* createAccount service - email, password
+     * creates a new account
+     */
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public @ResponseBody Response createAccount(
             @RequestBody String createAccountParams) throws JSONException {
@@ -39,6 +42,9 @@ public class WebController {
         return accountService.createAccount(email, password);
     }
 
+    /* changePassword service - email, oldPassword, newPassword
+     * changes an account's password
+     */
     @RequestMapping(value = "/account", method = RequestMethod.PUT)
     public @ResponseBody Response changePassword(
             @RequestBody String changePasswordParams) throws JSONException {
@@ -52,6 +58,9 @@ public class WebController {
         return accountService.changePassword(email, oldPassword, newPassword);
     }
 
+    /* deleteAccount service - email, password
+     * deletes a user's account
+     */
     @RequestMapping(value = "/account", method = RequestMethod.DELETE)
     public @ResponseBody Response deleteAccount(
             @RequestBody String deleteAccountParams) throws JSONException {
@@ -64,6 +73,10 @@ public class WebController {
         return accountService.deleteAccount(email, password);
     }
 
+    /* getAccounts service
+     * returns a list of all accounts stored in the database
+     * for testing purposes only - REMOVE LATER
+     */
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
     public  @ResponseBody Map getAccounts () throws IOException, JSONException {
 
