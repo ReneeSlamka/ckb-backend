@@ -9,6 +9,8 @@ public class Response {
     public static final String ACCOUNT_CREATED = "Account creation succeeded.";
     public static final String PW_CHANGED = "Password was successfully changed.";
     public static final String PW_CHANGE_FAILED = "Password change failed because old password was incorrect.";
+    public static final String ACCOUNT_DELETED = "Account deleted successfully.";
+    public static final String INCORRECT_PW = "Operation failed due to incorrect password";
 
     private String message;
     private boolean succeeded;
@@ -30,5 +32,15 @@ public class Response {
 
     public boolean getSucceeded() {
         return this.succeeded;
+    }
+
+    public void success(String message) {
+        setSucceeded(true);
+        setMessage(message);
+    }
+
+    public void error(String message) {
+        setSucceeded(false);
+        setMessage(message);
     }
 }

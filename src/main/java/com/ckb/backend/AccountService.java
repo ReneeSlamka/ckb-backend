@@ -28,8 +28,7 @@ public class AccountService {
         Matcher emailMatcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 
         if (!emailMatcher.find() || email.length() == 0 || password.length() < 6) {
-            response.setSucceeded(false);
-            response.setMessage(Response.INVALID_CHARS);
+            response.error(Response.INVALID_CHARS);
         } else {
             /* only one account can be tied to a given email address */
             if (accountRepo.findByEmail(email) == null) {
@@ -39,16 +38,12 @@ public class AccountService {
 
                 /* ensure saved correctly */
                 if (savedAccount != null) {
-                    response.setSucceeded(true);
-                    response.setMessage(Response.ACCOUNT_CREATED);
+                    response.success(Response.ACCOUNT_CREATED);
                 } else {
-                    response.setSucceeded(false);
-                    response.setMessage(Response.DATABASE_ERROR);
+                    response.error(Response.DATABASE_ERROR);
                 }
-
             } else {
-                response.setSucceeded(false);
-                response.setMessage(Response.DUPLICATE_EMAIL);
+                response.error(Response.DUPLICATE_EMAIL);
             }
         }
 
@@ -62,13 +57,11 @@ public class AccountService {
         /* add check for password */
         Matcher emailMatcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         if (!emailMatcher.find()) {
-            response.setSucceeded(false);
-            response.setMessage(Response.INVALID_CHARS);
+            response.error(Response.INVALID_CHARS);
         } else {
             /* check that account with that email exists */
             if (accountRepo.findByEmail(email) == null) {
-                response.setSucceeded(false);
-                response.setMessage(Response.ACCOUNT_DNE);
+                response.error(Response.ACCOUNT_DNE);
             } else {
                 /* check that password is correct */
                 Account targetAccount = accountRepo.findByEmail(email);
@@ -78,15 +71,39 @@ public class AccountService {
 
                     /* check that changes saved correctly */
                     if (savedAccount != null) {
-                        response.setSucceeded(true);
-                        response.setMessage(Response.PW_CHANGED);
+                        response.success(Response.PW_CHANGED);
                     } else {
-                        response.setSucceeded(false);
-                        response.setMessage(Response.DATABASE_ERROR);
+                        response.error(Response.DATABASE_ERROR);
                     }
                 } else {
-                    response.setSucceeded(false);
-                    response.setMessage(Response.PW_CHANGE_FAILED);
+                    response.error(Response.PW_CHANGE_FAILED);
+                }
+            }
+        }
+
+        return response;
+    }
+
+    public Response deleteAccount(String email, String password) {
+        Response response = new Response();
+
+        /* check for illegal characters */
+        /* add check for password */
+        Matcher emailMatcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        if (!emailMatcher.find()) {
+            response.error(Response.INVALID_CHARS);
+        } else {
+            /* check that account with that email exists */
+            if (accountRepo.findByEmail(email) == null) {
+                response.error(Response.ACCOUNT_DNE);
+            } else {
+                /* check that password is correct */
+                Account targetAccount = accountRepo.findByEmail(email);
+                if (targetAccount.getPassword().equals(password)) {
+                    accountRepo.delete(targetAccount);
+                    response.success(Response.ACCOUNT_DELETED);
+                } else {
+                    response.error(Response.INCORRECT_PW);
                 }
             }
         }

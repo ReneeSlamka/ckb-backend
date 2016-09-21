@@ -52,6 +52,18 @@ public class WebController {
         return accountService.changePassword(email, oldPassword, newPassword);
     }
 
+    @RequestMapping(value = "/account", method = RequestMethod.DELETE)
+    public @ResponseBody Response deleteAccount(
+            @RequestBody String deleteAccountParams) throws JSONException {
+
+        JSONObject jsonBody = new JSONObject(deleteAccountParams);
+
+        String email = jsonBody.getString("email");
+        String password = jsonBody.getString("password");
+
+        return accountService.deleteAccount(email, password);
+    }
+
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
     public  @ResponseBody Map getAccounts () throws IOException, JSONException {
 
