@@ -74,8 +74,16 @@ public class AccountService {
                 Account targetAccount = accountRepo.findByEmail(email);
                 if (targetAccount.getPassword().equals(oldPassword)) {
                     targetAccount.setPassword(newPassword);
-                    response.setSucceeded(true);
-                    response.setMessage(Response.PW_CHANGED);
+                    Account savedAccount = accountRepo.save(targetAccount);
+
+                    /* check that changes saved correctly */
+                    if (savedAccount != null) {
+                        response.setSucceeded(true);
+                        response.setMessage(Response.PW_CHANGED);
+                    } else {
+                        response.setSucceeded(false);
+                        response.setMessage(Response.DATABASE_ERROR);
+                    }
                 } else {
                     response.setSucceeded(false);
                     response.setMessage(Response.PW_CHANGE_FAILED);
