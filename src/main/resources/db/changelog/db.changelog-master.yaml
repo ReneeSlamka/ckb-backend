@@ -18,3 +18,28 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+  - changeSet:
+        id: 2
+        author: rslamka
+        changes:
+          - addColumn:
+              tableName: account
+              columns:
+                - column:
+                    name: password
+                    type: varchar(20)
+          - createTable:
+              tableName: session
+              columns:
+                - column:
+                    name: id
+                    type: int
+                    autoIncrement: false
+                    constraints:
+                      nullable: false
+                - column:
+                    name: email
+                    type: varchar(255)
+                    constraints:
+                      primaryKey: true
+                      nullable: false

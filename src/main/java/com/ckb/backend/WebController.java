@@ -28,20 +28,28 @@ public class WebController {
     }
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
-    public @ResponseBody Map createAccount(
-            @RequestBody String accountSignupParams) throws JSONException {
+    public @ResponseBody Response createAccount(
+            @RequestBody String createAccountParams) throws JSONException {
 
-        JSONObject jsonBody = new JSONObject(accountSignupParams);
+        JSONObject jsonBody = new JSONObject(createAccountParams);
 
-        String accountEmail = jsonBody.getString("email");
+        String email = jsonBody.getString("email");
+        String password = jsonBody.getString("password");
 
-        if (accountEmail == null) {
-            accountEmail = "defaultName";
-        }
+        return accountService.createAccount(email, password);
+    }
 
-        Map response = accountService.createAccount(accountEmail);
+    @RequestMapping(value = "/account", method = RequestMethod.PUT)
+    public @ResponseBody Response changePassword(
+            @RequestBody String changePasswordParams) throws JSONException {
 
-        return response;
+        JSONObject jsonBody = new JSONObject(changePasswordParams);
+
+        String email = jsonBody.getString("email");
+        String oldPassword = jsonBody.getString("oldPassword");
+        String newPassword = jsonBody.getString("newPassword");
+
+        return accountService.changePassword(email, oldPassword, newPassword);
     }
 
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
