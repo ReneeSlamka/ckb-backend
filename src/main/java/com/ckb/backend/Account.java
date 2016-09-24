@@ -14,11 +14,14 @@ import java.util.ArrayList;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NotEmpty
     private String email;
+
+
+    /*@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;*/
+
+    //@NotEmpty
+
 
     @NotEmpty
     private String password;
